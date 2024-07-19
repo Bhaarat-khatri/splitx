@@ -12,7 +12,7 @@ import jakarta.persistence.OneToMany;
 public class User {
 	@Id
 	@GeneratedValue
-	private long userId;
+	private long id;
 	private String name;
 	private String email;
 	
@@ -28,17 +28,17 @@ public class User {
 
 	public User(long userId, String name, String email, LocalDateTime joinedTimestamp) {
 		super();
-		this.userId = userId;
+		this.id = userId;
 		this.name = name;
 		this.email = email;
 	}
 
 	public long getUserId() {
-		return userId;
+		return id;
 	}
 
 	public void setUserId(long userId) {
-		this.userId = userId;
+		this.id = userId;
 	}
 
 	public String getName() {

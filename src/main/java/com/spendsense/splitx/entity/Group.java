@@ -13,7 +13,7 @@ public class Group {
 
 	@Id
 	@GeneratedValue
-	private String id;
+	private long id;
 	private String groupName;
 	private String groupId;
 	private String groupOwner;
