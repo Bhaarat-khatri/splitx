@@ -4,23 +4,26 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-@Entity(name = "user_group")
+@Entity(name = "group_table")
 public class Group {
 
 	@Id
-	private String groupId;
+	@GeneratedValue
+	private String id;
 	private String groupName;
+	private String groupId;
 	private String groupOwner;
-	private LocalDateTime groupCreateDate;
+	private LocalDateTime createDate;
 	
 	@OneToMany(mappedBy="group")
 	List<UserGroupMapping> users;
 	
-//	@OneToMany(mappedBy="group")
-//	private List<Transaction> txns;
+	@OneToMany(mappedBy="group")
+	private List<Transaction> transaction;
 	
 	public Group() {
 		
@@ -31,7 +34,7 @@ public class Group {
 		this.groupId = groupId;
 		this.groupName = groupName;
 		this.groupOwner = groupOwner;
-		this.groupCreateDate = groupCreateDate;
+		this.createDate = groupCreateDate;
 	}
 
 	public String getGroupId() {
@@ -59,11 +62,11 @@ public class Group {
 	}
 
 	public LocalDateTime getGroupCreateDate() {
-		return groupCreateDate;
+		return createDate;
 	}
 
 	public void setGroupCreateDate(LocalDateTime groupCreateDate) {
-		this.groupCreateDate = groupCreateDate;
+		this.createDate = groupCreateDate;
 	}
 
 }

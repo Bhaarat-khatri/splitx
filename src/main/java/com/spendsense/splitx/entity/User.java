@@ -8,7 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-@Entity(name = "member")
+@Entity(name = "user_table")
 public class User {
 	@Id
 	@GeneratedValue
@@ -18,6 +18,9 @@ public class User {
 	
 	@OneToMany(mappedBy="user")
 	List<UserGroupMapping> groups;
+	
+	@OneToMany(mappedBy="user")
+	List<UserTransactionMapping> txn;
 	
 	public User() {
 		

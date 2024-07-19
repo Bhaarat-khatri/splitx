@@ -8,8 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-@Entity
-public class UserGroupMapping {
+@Entity(name = "user_group_mapping_table")
+public class UserGroupMapping{
 	@Id
 	@GeneratedValue
 	private long id;
