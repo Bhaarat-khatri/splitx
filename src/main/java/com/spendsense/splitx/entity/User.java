@@ -17,10 +17,10 @@ public class User {
 	private String email;
 	
 	@OneToMany(mappedBy="user")
-	List<UserGroupMapping> groups;
+	private List<UserGroupMapping> groups;
 	
 	@OneToMany(mappedBy="user")
-	List<UserTransactionMapping> txn;
+	private List<UserTransactionMapping> txn;
 	
 	public User() {
 		
