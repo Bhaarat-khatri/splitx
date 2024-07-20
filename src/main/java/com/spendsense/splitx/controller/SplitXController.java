@@ -28,7 +28,7 @@ public class SplitXController {
 		return groupService.getGroupsByUser(id);
 	}
 	
-	@PostMapping("/home/{id}/creategroup")
+	@PostMapping("/home/{id}/create-group")
 	public Group createGroup(@RequestBody Group group, @PathVariable long id) throws Exception {
 		try {
 			User user = userService.getUserById(id);
@@ -39,5 +39,15 @@ public class SplitXController {
 			throw new Exception(e);
 		}
 		
+	}
+	
+	@PostMapping("/home/{id}/join-group")
+	public Group joinGroup(@RequestBody Group group,@PathVariable long id) throws Exception {
+		
+		try {
+			return groupService.joinGroup(group, id);
+		} catch(Exception e) {
+			throw new Exception(e);
+		}
 	}
 }

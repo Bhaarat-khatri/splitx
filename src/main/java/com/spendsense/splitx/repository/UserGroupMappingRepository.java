@@ -3,6 +3,7 @@ package com.spendsense.splitx.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.spendsense.splitx.entity.UserGroupMapping;
@@ -11,4 +12,8 @@ import com.spendsense.splitx.entity.UserGroupMapping;
 public interface UserGroupMappingRepository extends JpaRepository<UserGroupMapping, Long> {
 	
 	List<UserGroupMapping> findAllByUserId(long userId);
+	
+	@Query(value = "SELECT * FROM USER_GROUP_MAPPING_TABLE WHERE USER_ID = :userId and GROUP_ID = :groupId",nativeQuery = true)
+	UserGroupMapping checkUserInGroup(long userId, long groupId);
+
 }

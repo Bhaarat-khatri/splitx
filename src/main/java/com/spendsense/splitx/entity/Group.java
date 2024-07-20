@@ -28,7 +28,7 @@ public class Group {
 	private List<Transaction> transaction;
 
 	@ManyToOne
-	@JoinColumn(name = "group_owner")
+//	@JoinColumn(name = "sharadwa")
 	private User groupOwner;
 
 	public Group() {
