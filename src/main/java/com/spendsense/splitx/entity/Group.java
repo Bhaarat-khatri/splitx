@@ -5,31 +5,37 @@ import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity(name = "group_table")
 public class Group {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String groupName;
 	private String groupCode;
-	private String groupOwner;
 	private LocalDateTime createDate;
-	
-	@OneToMany(mappedBy="group")
+
+	@OneToMany(mappedBy = "group")
 	private List<UserGroupMapping> users;
-	
-	@OneToMany(mappedBy="group")
+
+	@OneToMany(mappedBy = "group")
 	private List<Transaction> transaction;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "group_owner")
+	private User groupOwner;
+
 	public Group() {
-		
+
 	}
 
-	public Group(String groupCode, String groupName, String groupOwner, LocalDateTime groupCreateDate) {
+	public Group(String groupCode, String groupName, User groupOwner, LocalDateTime groupCreateDate) {
 		super();
 		this.groupCode = groupCode;
 		this.groupName = groupName;
@@ -37,11 +43,11 @@ public class Group {
 		this.createDate = groupCreateDate;
 	}
 
-	public String getGroupId() {
+	public String getGroupCode() {
 		return groupCode;
 	}
 
-	public void setGroupId(String groupCode) {
+	public void setGroupCode(String groupCode) {
 		this.groupCode = groupCode;
 	}
 
@@ -53,11 +59,11 @@ public class Group {
 		this.groupName = groupName;
 	}
 
-	public String getGroupOwner() {
+	public User getGroupOwner() {
 		return groupOwner;
 	}
 
-	public void setGroupOwner(String groupOwner) {
+	public void setGroupOwner(User groupOwner) {
 		this.groupOwner = groupOwner;
 	}
 
@@ -67,6 +73,10 @@ public class Group {
 
 	public void setGroupCreateDate(LocalDateTime groupCreateDate) {
 		this.createDate = groupCreateDate;
+	}
+
+	public long getId() {
+		return id;
 	}
 
 }

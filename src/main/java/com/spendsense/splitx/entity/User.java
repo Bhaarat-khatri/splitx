@@ -22,6 +22,9 @@ public class User {
 	@OneToMany(mappedBy="user")
 	private List<UserTransactionMapping> txn;
 	
+	@OneToMany(mappedBy = "groupOwner")
+	private List<Group> ownedGroups;
+	
 	public User() {
 		
 	}
