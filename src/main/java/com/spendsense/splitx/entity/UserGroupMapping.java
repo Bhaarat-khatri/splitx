@@ -16,11 +16,11 @@ public class UserGroupMapping{
 	
 	@ManyToOne
 	@JoinColumn(name="group_id")
-	Group group;
+	private Group group;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	User user;
+	private User user;
 	
 	private LocalDateTime joinedTimestamp;
 	

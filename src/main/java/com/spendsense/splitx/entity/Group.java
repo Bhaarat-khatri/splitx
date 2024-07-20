@@ -15,12 +15,12 @@ public class Group {
 	@GeneratedValue
 	private long id;
 	private String groupName;
-	private String groupId;
+	private String groupCode;
 	private String groupOwner;
 	private LocalDateTime createDate;
 	
 	@OneToMany(mappedBy="group")
-	List<UserGroupMapping> users;
+	private List<UserGroupMapping> users;
 	
 	@OneToMany(mappedBy="group")
 	private List<Transaction> transaction;
@@ -29,20 +29,20 @@ public class Group {
 		
 	}
 
-	public Group(String groupId, String groupName, String groupOwner, LocalDateTime groupCreateDate) {
+	public Group(String groupCode, String groupName, String groupOwner, LocalDateTime groupCreateDate) {
 		super();
-		this.groupId = groupId;
+		this.groupCode = groupCode;
 		this.groupName = groupName;
 		this.groupOwner = groupOwner;
 		this.createDate = groupCreateDate;
 	}
 
 	public String getGroupId() {
-		return groupId;
+		return groupCode;
 	}
 
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
+	public void setGroupId(String groupCode) {
+		this.groupCode = groupCode;
 	}
 
 	public String getGroupName() {
