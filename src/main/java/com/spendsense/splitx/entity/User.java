@@ -25,6 +25,13 @@ public class User {
 	@OneToMany(mappedBy = "groupOwner")
 	private List<Group> ownedGroups;
 	
+	@OneToMany(mappedBy = "createdBy")
+	private List<Transaction> createdTransaction;
+	
+	@OneToMany(mappedBy = "updatedBy")
+	private List<Transaction> updatedTransaction;
+	
+	
 	public User() {
 		
 	}

@@ -3,6 +3,7 @@ package com.spendsense.splitx.entity;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -10,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class UserTransactionMapping {
 	@Id
+	@GeneratedValue
 	private long id;
 	
 	@ManyToOne
@@ -22,8 +24,8 @@ public class UserTransactionMapping {
 	
 	private double spent;
 	private double myShare;
-	
-	public UserTransactionMapping(long id, Transaction transaction, User user, double spent, double myShare) {
+	public UserTransactionMapping() {}
+		public UserTransactionMapping(long id, Transaction transaction, User user, double spent, double myShare) {
 		super();
 		this.id = id;
 		this.transaction = transaction;

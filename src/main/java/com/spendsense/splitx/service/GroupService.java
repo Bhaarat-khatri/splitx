@@ -2,15 +2,20 @@ package com.spendsense.splitx.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spendsense.splitx.entity.Group;
+import com.spendsense.splitx.entity.Transaction;
 import com.spendsense.splitx.entity.User;
 import com.spendsense.splitx.entity.UserGroupMapping;
+import com.spendsense.splitx.entity.UserTransactionMapping;
 import com.spendsense.splitx.repository.GroupRepository;
+import com.spendsense.splitx.repository.TransactionRepository;
 import com.spendsense.splitx.repository.UserGroupMappingRepository;
 import com.spendsense.splitx.repository.UserRepository;
 import com.spendsense.splitx.util.GroupCodeGenerator;
@@ -26,6 +31,7 @@ public class GroupService {
 	
 	@Autowired 
 	private UserRepository userRepository;
+	
 	
 	public List<Group> getGroupsByUser(long userId) {
 		List<UserGroupMapping> mappingsByUser = userGroupMappingRepository.findAllByUserId(userId);
@@ -89,6 +95,7 @@ public class GroupService {
 		}
 		
 	}
+	
 }
 	
  
