@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spendsense.splitx.entity.Group;
+import com.spendsense.splitx.entity.Repayments;
 import com.spendsense.splitx.entity.User;
 import com.spendsense.splitx.service.GroupService;
 import com.spendsense.splitx.service.TransactionService;
@@ -59,17 +60,18 @@ public class SplitXController {
 	
 	
 	@PostMapping("/home/{id}/add-expense")
-	public Map<String, Object> addExpense(@RequestBody Map<String, Object> payload,@PathVariable long id) throws Exception {
+	public List<Repayments> addExpense(@RequestBody Map<String, Object> payload,@PathVariable long id) throws Exception {
 		
 		System.out.println(payload);
 		
 		try {
-			transactionService.createTransaction(payload, id);
-			Map<String, Object> response = new HashMap<>();
-			response.put("message" , "transaction added");
-			return response;
+			List<Repayments> repayments = transactionService.createTransaction(payload, id);
+			Map<String, Object> response = new HashMap<>();			
+			response.put("message" , repayments);
+			return repayments;
 		} catch(Exception e) {
 			throw new Exception(e);
 		}
 	}
+	
 }

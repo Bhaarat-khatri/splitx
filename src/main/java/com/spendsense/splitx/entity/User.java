@@ -3,6 +3,8 @@ package com.spendsense.splitx.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -30,6 +32,14 @@ public class User {
 	
 	@OneToMany(mappedBy = "updatedBy")
 	private List<Transaction> updatedTransaction;
+	
+	@OneToMany(mappedBy = "from")
+	@JsonIgnore
+	private List<Repayments> fromRepayments;
+	
+	@OneToMany(mappedBy = "to")
+	@JsonIgnore
+	private List<Repayments> toRepaymnets;
 	
 	
 	public User() {
@@ -65,6 +75,22 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<Repayments> getFromRepayments() {
+		return fromRepayments;
+	}
+
+	public void setFromRepayments(List<Repayments> fromRepayments) {
+		this.fromRepayments = fromRepayments;
+	}
+
+	public List<Repayments> getToRepaymnets() {
+		return toRepaymnets;
+	}
+
+	public void setToRepaymnets(List<Repayments> toRepaymnets) {
+		this.toRepaymnets = toRepaymnets;
 	}
 
 }
