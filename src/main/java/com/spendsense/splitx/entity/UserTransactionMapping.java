@@ -2,6 +2,8 @@ package com.spendsense.splitx.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,6 +18,7 @@ public class UserTransactionMapping {
 	
 	@ManyToOne
 	@JoinColumn(name="transaction_id")
+	@JsonIgnore
 	private Transaction transaction;
 	
 	@ManyToOne

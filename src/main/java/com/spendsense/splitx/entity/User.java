@@ -19,9 +19,11 @@ public class User {
 	private String email;
 	
 	@OneToMany(mappedBy="user")
+	@JsonIgnore
 	private List<UserGroupMapping> groups;
 	
 	@OneToMany(mappedBy="user")
+	@JsonIgnore
 	private List<UserTransactionMapping> txn;
 	
 	@OneToMany(mappedBy = "groupOwner")

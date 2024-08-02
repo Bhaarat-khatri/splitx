@@ -3,11 +3,15 @@ package com.spendsense.splitx.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -22,13 +26,13 @@ public class Group {
 	private LocalDateTime createDate;
 
 	@OneToMany(mappedBy = "group")
+	@JsonIgnore
 	private List<UserGroupMapping> users;
 
 	@OneToMany(mappedBy = "group")
 	private List<Transaction> transaction;
 
 	@ManyToOne
-//	@JoinColumn(name = "sharadwa")
 	private User groupOwner;
 
 	public Group() {
@@ -78,5 +82,22 @@ public class Group {
 	public long getId() {
 		return id;
 	}
+
+	public List<Transaction> getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(List<Transaction> transaction) {
+		this.transaction = transaction;
+	}
+
+	public List<UserGroupMapping> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<UserGroupMapping> users) {
+		this.users = users;
+	}
+	
 
 }

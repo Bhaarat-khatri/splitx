@@ -21,6 +21,8 @@ import com.spendsense.splitx.repository.TransactionRepository;
 import com.spendsense.splitx.repository.UserRepository;
 import com.spendsense.splitx.repository.UserTransactionMappingRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class TransactionService {
 	
@@ -160,6 +162,11 @@ public class TransactionService {
         return result;
     }
 	
+	public Group getGroupDetails(String groupCode) { 
+		Group group = groupRepository.findByGroupCode(groupCode);
+		return group;
+	}
+
 	
 
 }
