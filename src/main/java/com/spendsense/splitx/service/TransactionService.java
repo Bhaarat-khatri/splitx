@@ -15,11 +15,15 @@ import com.spendsense.splitx.entity.Repayments;
 import com.spendsense.splitx.entity.Transaction;
 import com.spendsense.splitx.entity.User;
 import com.spendsense.splitx.entity.UserTransactionMapping;
+import com.spendsense.splitx.exception.GroupNotFoundException;
+import com.spendsense.splitx.exception.UserAlreadyExistsException;
 import com.spendsense.splitx.repository.GroupRepository;
 import com.spendsense.splitx.repository.RepaymentsRepository;
 import com.spendsense.splitx.repository.TransactionRepository;
 import com.spendsense.splitx.repository.UserRepository;
 import com.spendsense.splitx.repository.UserTransactionMappingRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class TransactionService {
@@ -53,11 +57,11 @@ public class TransactionService {
 
 			Group group = groupRepository.findByGroupCode(payload.get("groupCode").toString());
 			if (group == null) {
-				throw new Exception("Group not found");
+				throw new GroupNotFoundException("Group not found");
 			}
 			User loggedInUser = userRepository.findById(userId).get();
 			if (loggedInUser == null) {
-				throw new Exception("User not found");
+				throw new UserAlreadyExistsException("User not found");
 			}
 
 			Transaction newTransaction = new Transaction();
@@ -160,6 +164,11 @@ public class TransactionService {
         return result;
     }
 	
+	public Group getGroupDetails(String groupCode) { 
+		Group group = groupRepository.findByGroupCode(groupCode);
+		return group;
+	}
+
 	
 
 }

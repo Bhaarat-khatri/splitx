@@ -3,9 +3,14 @@ package com.spendsense.splitx.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -17,29 +22,32 @@ public class Transaction {
 	private long id;
 
 	@ManyToOne
+	@JsonIgnore
 	private Group group;
 
 	@OneToMany(mappedBy = "transaction")
-	private List<UserTransactionMapping> transaction;
+	private List<UserTransactionMapping> userTransactions;
 
 	private LocalDateTime createdDate;
 
 	private LocalDateTime updatedDate;
 
 	private String transactionDescription;
+	
 	@ManyToOne
+	@JsonIgnore
 	private User createdBy;
 
 	@OneToMany(mappedBy = "txn")
 	private List<Repayments> repayments;
 
 	@ManyToOne
+	@JsonIgnore
 	private User updatedBy;
 
 	private int softDelete;
 
 	public Transaction() {
-		super();
 	}
 
 	public Transaction(long id, Group group, List<UserTransactionMapping> transaction, LocalDateTime createdDate,
@@ -48,7 +56,7 @@ public class Transaction {
 		super();
 		this.id = id;
 		this.group = group;
-		this.transaction = transaction;
+		this.userTransactions = transaction;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
 		this.createdBy = createdBy;
@@ -104,12 +112,12 @@ public class Transaction {
 		this.group = group;
 	}
 
-	public List<UserTransactionMapping> getTransaction() {
-		return transaction;
+	public List<UserTransactionMapping> getUserTransactions() {
+		return userTransactions;
 	}
 
-	public void setTransaction(List<UserTransactionMapping> transaction) {
-		this.transaction = transaction;
+	public void setUserTransactions(List<UserTransactionMapping> transaction) {
+		this.userTransactions = transaction;
 	}
 
 	public int getSoftDelete() {
@@ -126,5 +134,13 @@ public class Transaction {
 
 	public void setTransactionDescription(String transactionDescription) {
 		this.transactionDescription = transactionDescription;
+	}
+
+	public List<Repayments> getRepayments() {
+		return repayments;
+	}
+
+	public void setRepayments(List<Repayments> repayments) {
+		this.repayments = repayments;
 	}
 }

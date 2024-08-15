@@ -2,6 +2,8 @@ package com.spendsense.splitx.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,6 +18,7 @@ public class UserGroupMapping{
 	
 	@ManyToOne
 	@JoinColumn(name="group_id")
+	@JsonIgnore
 	private Group group;
 	
 	@ManyToOne
@@ -25,7 +28,6 @@ public class UserGroupMapping{
 	private LocalDateTime joinedTimestamp;
 	
 	public UserGroupMapping() {
-		
 	}
 
 	public UserGroupMapping(Group group, User user, LocalDateTime joinedTimestamp) {

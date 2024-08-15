@@ -1,5 +1,7 @@
 package com.spendsense.splitx.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -19,6 +21,7 @@ public class Repayments {
 	private User to;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Transaction txn;
 	
 	private double amount;

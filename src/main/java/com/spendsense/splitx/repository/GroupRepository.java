@@ -9,4 +9,5 @@ import com.spendsense.splitx.entity.Group;
 public interface GroupRepository extends JpaRepository<Group, Long> {
 	
 	Group findByGroupCode(String groupCode);
+	
 }

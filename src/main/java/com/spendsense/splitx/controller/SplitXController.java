@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spendsense.splitx.entity.Group;
 import com.spendsense.splitx.entity.Repayments;
 import com.spendsense.splitx.entity.User;
+import com.spendsense.splitx.entity.UserGroupMapping;
 import com.spendsense.splitx.service.GroupService;
 import com.spendsense.splitx.service.TransactionService;
 import com.spendsense.splitx.service.UserService;
@@ -30,10 +32,14 @@ public class SplitXController {
 	@Autowired
 	private TransactionService transactionService;
 	
+	
 	@GetMapping("/home/{id}")
 	public List<Group> getGroupsByUser(@PathVariable long id) {
+		System.out.println(id);
 		return groupService.getGroupsByUser(id);
 	}
+	
+	
 	
 	@PostMapping("/home/{id}/create-group")
 	public Group createGroup(@RequestBody Group group, @PathVariable long id) throws Exception {
@@ -49,20 +55,16 @@ public class SplitXController {
 	}
 	
 	@PostMapping("/home/{id}/join-group")
-	public Group joinGroup(@RequestBody Group group,@PathVariable long id) throws Exception {
-		
-		try {
-			return groupService.joinGroup(group, id);
-		} catch(Exception e) {
-			throw new Exception(e);
-		}
+	public ResponseEntity<Group> joinGroup(@RequestBody Group group,@PathVariable long id) throws Exception  {
+		Group joinedGroup = groupService.joinGroup(group, id);
+		return ResponseEntity.ok(joinedGroup);
 	}
 	
-	
+
 	@PostMapping("/home/{id}/add-expense")
 	public List<Repayments> addExpense(@RequestBody Map<String, Object> payload,@PathVariable long id) throws Exception {
 		
-		System.out.println(payload);
+		//System.out.println(payload);
 		
 		try {
 			List<Repayments> repayments = transactionService.createTransaction(payload, id);
@@ -74,4 +76,16 @@ public class SplitXController {
 		}
 	}
 	
+	@GetMapping("/api/group/{groupCode}")
+	public ResponseEntity<Group> getGroupTransactions(@PathVariable String groupCode) {
+		Group group = transactionService.getGroupDetails(groupCode);
+		return ResponseEntity.ok(group);
+	}
+	
+	@GetMapping("/api/group/{groupCode}/users")
+	public List<UserGroupMapping> getGroupUsers(@PathVariable String groupCode) {
+		return groupService.getGroupUsers(groupCode);
+	}
+
+
 }

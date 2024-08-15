@@ -14,6 +14,8 @@ import com.spendsense.splitx.entity.Transaction;
 import com.spendsense.splitx.entity.User;
 import com.spendsense.splitx.entity.UserGroupMapping;
 import com.spendsense.splitx.entity.UserTransactionMapping;
+import com.spendsense.splitx.exception.GroupNotFoundException;
+import com.spendsense.splitx.exception.UserAlreadyExistsException;
 import com.spendsense.splitx.repository.GroupRepository;
 import com.spendsense.splitx.repository.TransactionRepository;
 import com.spendsense.splitx.repository.UserGroupMappingRepository;
@@ -71,12 +73,12 @@ public class GroupService {
 			Group groupObj = groupRepository.findByGroupCode(group.getGroupCode());
 			
 			if(groupObj == null) {
-				throw new Exception("group not found");
+				throw new GroupNotFoundException("Group not found");
 			}
 			UserGroupMapping userGroups = userGroupMappingRepository.checkUserInGroup(userId, groupObj.getId());
 			
 			if(userGroups != null) {
-				throw new Exception("you are already in a group bhadwe");
+				throw new UserAlreadyExistsException("You are already in this group");
 			}
 			
 			User user = userRepository.findById(userId).get();
@@ -94,6 +96,11 @@ public class GroupService {
 			throw new Exception(e);
 		}
 		
+	}
+	
+	public List<UserGroupMapping> getGroupUsers(String groupCode) {
+		Group group = groupRepository.findByGroupCode(groupCode);
+		return group.getUsers();
 	}
 	
 }
