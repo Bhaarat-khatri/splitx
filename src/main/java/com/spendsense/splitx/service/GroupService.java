@@ -98,6 +98,11 @@ public class GroupService {
 		
 	}
 	
+	public List<UserGroupMapping> getGroupUsers(String groupCode) {
+		Group group = groupRepository.findByGroupCode(groupCode);
+		return group.getUsers();
+	}
+	
 }
 	
  

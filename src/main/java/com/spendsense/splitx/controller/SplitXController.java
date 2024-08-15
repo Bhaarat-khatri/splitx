@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spendsense.splitx.entity.Group;
 import com.spendsense.splitx.entity.Repayments;
 import com.spendsense.splitx.entity.User;
-import com.spendsense.splitx.entity.UserTransactionMapping;
+import com.spendsense.splitx.entity.UserGroupMapping;
 import com.spendsense.splitx.service.GroupService;
 import com.spendsense.splitx.service.TransactionService;
 import com.spendsense.splitx.service.UserService;
@@ -80,6 +80,11 @@ public class SplitXController {
 	public ResponseEntity<Group> getGroupTransactions(@PathVariable String groupCode) {
 		Group group = transactionService.getGroupDetails(groupCode);
 		return ResponseEntity.ok(group);
+	}
+	
+	@GetMapping("/api/group/{groupCode}/users")
+	public List<UserGroupMapping> getGroupUsers(@PathVariable String groupCode) {
+		return groupService.getGroupUsers(groupCode);
 	}
 
 
