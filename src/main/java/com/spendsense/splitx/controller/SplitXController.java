@@ -36,7 +36,7 @@ public class SplitXController {
 	
 
 
-	@GetMapping("/home/{id}")
+	@GetMapping("/api/get-groups")
 	public List<Group> getGroupsByUser(HttpServletRequest request) {
 		
 		System.out.println(request.getAttribute("userId"));
@@ -44,7 +44,7 @@ public class SplitXController {
 		return groupService.getGroupsByUser(userId);
 	}
 
-	@PostMapping("/home/{id}/create-group")
+	@PostMapping("/api/create-group")
 	public Group createGroup(@RequestBody Group group,HttpServletRequest request) throws Exception {
 		try {
 			Long userId = (Long) request.getAttribute("userId");
@@ -60,15 +60,15 @@ public class SplitXController {
 
 	}
 
-	@PostMapping("/home/{id}/join-group")
-	public ResponseEntity<Group> joinGroup(@RequestBody Group group, @PathVariable long id,HttpServletRequest request) throws Exception {
+	@PostMapping("/api/join-group")
+	public ResponseEntity<Group> joinGroup(@RequestBody Group group,HttpServletRequest request) throws Exception {
 		Long userId = (Long) request.getAttribute("userId");
 
 		Group joinedGroup = groupService.joinGroup(group, userId);
 		return ResponseEntity.ok(joinedGroup);
 	}
 
-	@PostMapping("/home/{id}/add-expense")
+	@PostMapping("/api/add-expense")
 	public List<Repayments> addExpense(@RequestBody Map<String, Object> payload, @PathVariable long id,HttpServletRequest request)
 			throws Exception {
 

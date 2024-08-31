@@ -16,7 +16,7 @@ import jakarta.persistence.SequenceGenerator;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-	@SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", initialValue = 1, allocationSize = 1)
+	@SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", initialValue = 10, allocationSize = 1)
 	private long id;
 	private String name;
 	private String email;
