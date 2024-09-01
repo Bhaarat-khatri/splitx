@@ -26,14 +26,24 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
         String email = oauth2User.getAttribute("email");
         String name = oauth2User.getAttribute("name");
+        String photo = oauth2User.getAttribute("picture");
+        System.out.println(photo);
         System.out.println(oauth2User);
         // Redirect URL with user details as query parameters
-        User user = new User();
-        user.setEmail(email);
-        user.setName(name);
+       
+        User user  = userRepository.findByEmail(email) ;
         if(userRepository.findByEmail(email) == null) {
+        	 user = new User();
+             user.setEmail(email);
+             user.setName(name);
+             user.setPhoto(photo);
             userRepository.save(user);
-        }        
+        } else {
+        	user.setEmail(email);
+            user.setName(name);
+            user.setPhoto(photo);
+           userRepository.save(user);
+        }
         System.out.println(email + name + "out");
         String redirectUrl = "http://localhost:3000/redirectURI";
         

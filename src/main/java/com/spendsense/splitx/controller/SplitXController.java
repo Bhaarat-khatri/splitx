@@ -34,7 +34,11 @@ public class SplitXController {
 	@Autowired
 	private TransactionService transactionService;
 	
-
+	@GetMapping("/api/get-user-details")
+	public User getUser(HttpServletRequest request) {
+		Long userId = (Long) request.getAttribute("userId");
+		return userService.getUserById(userId);
+	}
 
 	@GetMapping("/api/get-groups")
 	public List<Group> getGroupsByUser(HttpServletRequest request) {
@@ -69,7 +73,7 @@ public class SplitXController {
 	}
 
 	@PostMapping("/api/add-expense")
-	public List<Repayments> addExpense(@RequestBody Map<String, Object> payload, @PathVariable long id,HttpServletRequest request)
+	public List<Repayments> addExpense(@RequestBody Map<String, Object> payload,HttpServletRequest request)
 			throws Exception {
 
 		try {

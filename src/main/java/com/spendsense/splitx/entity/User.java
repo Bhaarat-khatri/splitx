@@ -20,6 +20,8 @@ public class User {
 	private long id;
 	private String name;
 	private String email;
+	private String photo;
+
 
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
@@ -49,7 +51,17 @@ public class User {
 	public User() {
 
 	}
+	
+	
+	public String getPhoto() {
+		return photo;
+	}
 
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	
+	}
+	
 	public User(long userId, String name, String email, LocalDateTime joinedTimestamp) {
 		super();
 		this.id = userId;
