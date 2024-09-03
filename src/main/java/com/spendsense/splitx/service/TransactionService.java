@@ -70,6 +70,11 @@ public class TransactionService {
 			newTransaction.setCreatedDate(LocalDateTime.now());
 			newTransaction.setSoftDelete(0);
 			newTransaction.setTransactionDescription(payload.get("description").toString());
+			if(payload.get("settlementType") == null) {
+				newTransaction.setTransactionType("expense");
+			} else {
+				newTransaction.setTransactionType("settlement");
+			}
 
 			Transaction transactionObj = transactionRepository.save(newTransaction);
 

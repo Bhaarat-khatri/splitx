@@ -34,6 +34,8 @@ public class Transaction {
 
 	private String transactionDescription;
 	
+	private String transactionType;
+	
 	@ManyToOne
 	@JsonIgnore
 	private User createdBy;
@@ -52,7 +54,7 @@ public class Transaction {
 
 	public Transaction(long id, Group group, List<UserTransactionMapping> transaction, LocalDateTime createdDate,
 			LocalDateTime updatedDate, User createdBy, User updatedBy, LocalDateTime txnTime, double txnAmount,
-			int softDelete) {
+			int softDelete, String transactionType) {
 		super();
 		this.id = id;
 		this.group = group;
@@ -62,6 +64,7 @@ public class Transaction {
 		this.createdBy = createdBy;
 		this.updatedBy = updatedBy;
 		this.softDelete = softDelete;
+		this.transactionType = transactionType;
 	}
 
 	public LocalDateTime getCreatedDate() {
@@ -142,5 +145,13 @@ public class Transaction {
 
 	public void setRepayments(List<Repayments> repayments) {
 		this.repayments = repayments;
+	}
+
+	public String getTransactionType() {
+		return transactionType;
+	}
+
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
 	}
 }
