@@ -1,5 +1,6 @@
 package com.spendsense.splitx;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +9,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class SplitXApplication {
+	
+	@Value("${client.url}")
+    private String clientUrl;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SplitXApplication.class, args);
@@ -19,7 +23,7 @@ public class SplitXApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
 				.allowedMethods("*")
-				.allowedOrigins("http://localhost:3000")
+				.allowedOrigins(clientUrl)
 				.allowedHeaders("*")
 				.allowedMethods("*")
 				.allowCredentials(true);

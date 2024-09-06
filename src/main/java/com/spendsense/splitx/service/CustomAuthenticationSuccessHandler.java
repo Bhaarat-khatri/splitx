@@ -1,10 +1,9 @@
 package com.spendsense.splitx.service;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -20,6 +19,10 @@ import jakarta.servlet.http.HttpServletResponse;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Value("${client.url}")
+    private String clientUrl;
+	
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         // Get user details
@@ -45,7 +48,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
            userRepository.save(user);
         }
         System.out.println(email + name + "out");
-        String redirectUrl = "http://localhost:3000/redirectURI";
+        String redirectUrl = clientUrl + "/redirectURI";
         
         response.sendRedirect(redirectUrl);
     }
