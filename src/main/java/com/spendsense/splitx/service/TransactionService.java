@@ -97,9 +97,9 @@ public class TransactionService {
 					userTransactionMapping.setTransaction(transactionObj);
 
 					if (key.contains("userSpent"))
-						userTransactionMapping.setSpent(Long.valueOf(element.getValue().toString()));
+						userTransactionMapping.setSpent(Double.valueOf(element.getValue().toString()));
 					else if (key.contains("userShare"))
-						userTransactionMapping.setMyShare(Long.valueOf(element.getValue().toString()));
+						userTransactionMapping.setMyShare(Double.valueOf(element.getValue().toString()));
 					else if (key.contains("userId"))
 						userTransactionMapping
 								.setUser(userRepository.findById(Long.valueOf(element.getValue().toString())).get());
