@@ -169,9 +169,15 @@ public class TransactionService {
         return result;
     }
 	
-	public Group getGroupDetails(String groupCode) { 
+	public List<Transaction> getGroupTransactions(String groupCode) { 
 		Group group = groupRepository.findByGroupCode(groupCode);
-		return group;
+		return transactionRepository.findTransactionByGroupId(group.getId());
+	}
+	
+	public Transaction deleteTransaction(Long id) {
+		Transaction txn = transactionRepository.findById(id).get();
+		txn.setSoftDelete(1);
+		return transactionRepository.save(txn);
 	}
 
 	

@@ -9,11 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spendsense.splitx.entity.Group;
 import com.spendsense.splitx.entity.Repayments;
+import com.spendsense.splitx.entity.Transaction;
 import com.spendsense.splitx.entity.User;
 import com.spendsense.splitx.entity.UserGroupMapping;
 import com.spendsense.splitx.service.GroupService;
@@ -89,14 +91,20 @@ public class SplitXController {
 	}
 
 	@GetMapping("/api/group/{groupCode}")
-	public ResponseEntity<Group> getGroupTransactions(@PathVariable String groupCode) {
-		Group group = transactionService.getGroupDetails(groupCode);
-		return ResponseEntity.ok(group);
+	public ResponseEntity<List<Transaction>> getGroupTransactions(@PathVariable String groupCode) {
+		List<Transaction> txnList = transactionService.getGroupTransactions(groupCode);
+		return ResponseEntity.ok(txnList);
 	}
 
 	@GetMapping("/api/group/{groupCode}/users")
 	public List<UserGroupMapping> getGroupUsers(@PathVariable String groupCode) {
 		return groupService.getGroupUsers(groupCode);
 	}
+	
+	@PutMapping("/api/delete-transaction/{txnId}")
+	public Transaction deleteTransaction(@PathVariable Long txnId) {
+		return transactionService.deleteTransaction(txnId);
+	}
+	
 
 }
