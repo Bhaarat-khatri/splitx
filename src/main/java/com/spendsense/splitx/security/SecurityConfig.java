@@ -1,15 +1,13 @@
 package com.spendsense.splitx.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.session.web.http.CookieSerializer;
-import org.springframework.session.web.http.DefaultCookieSerializer;
 
 import com.spendsense.splitx.service.CustomAuthenticationSuccessHandler;
 import com.spendsense.splitx.service.CustomInvalidSessionStrategy;
@@ -21,7 +19,13 @@ public class SecurityConfig {
     
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final CustomInvalidSessionStrategy customInvalidSessionStrategy;
-
+    
+    @Autowired
+    private  CustomAccessDeniedHandler customAccessDeniedHandler;
+    @Autowired
+    private  CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+   
+    
     public SecurityConfig(CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler, CustomInvalidSessionStrategy customInvalidSessionStrategy) {
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
         this.customInvalidSessionStrategy = customInvalidSessionStrategy;
@@ -37,24 +41,13 @@ public class SecurityConfig {
                         .invalidateHttpSession(true) // Invalidate session
                         .deleteCookies("JSESSIONID") // Delete cookies
                 )
-                .sessionManagement(session -> session
-                		.invalidSessionStrategy(customInvalidSessionStrategy)
-                        .maximumSessions(1) // Allow one session per user
-                )
-                .sessionManagement(session -> session
-                        .sessionFixation().migrateSession() // Handle session fixation
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Session creation policy
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                .authenticationEntryPoint(customAuthenticationEntryPoint) // Handle authentication exceptions
+                .accessDeniedHandler(customAccessDeniedHandler) // Handle access denied exceptions
                 );
 
+        
+        
         return http.build();
-    }
-
-    // Extend JSESSIONID cookie validity to 1 year
-    @Bean
-    public CookieSerializer cookieSerializer() {
-        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setCookieMaxAge(31536000); // 1 year in seconds
-        serializer.setCookieName("JSESSIONID");
-        return serializer;
     }
 }
