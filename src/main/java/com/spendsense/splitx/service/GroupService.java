@@ -103,6 +103,10 @@ public class GroupService {
 		return group.getUsers();
 	}
 	
+	public Group getGroupDetailsByGroupCode(String groupCode) {
+		return groupRepository.findByGroupCode(groupCode);
+	}
+	
 }
 	
  

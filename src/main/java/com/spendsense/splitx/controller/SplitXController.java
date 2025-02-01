@@ -106,5 +106,11 @@ public class SplitXController {
 		return transactionService.deleteTransaction(txnId);
 	}
 	
+	@GetMapping("/api/{groupCode}")
+	public ResponseEntity<Group> getGroupDetails(@PathVariable String groupCode) {
+		Group group = groupService.getGroupDetailsByGroupCode(groupCode);
+		return ResponseEntity.ok(group);
+	}
+	
 
 }
