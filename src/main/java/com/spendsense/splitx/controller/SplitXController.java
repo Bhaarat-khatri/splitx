@@ -112,5 +112,12 @@ public class SplitXController {
 		return ResponseEntity.ok(group);
 	}
 	
+	@PutMapping("/api/group/{groupCode}/edit") 
+	public ResponseEntity<Group> editGroup(@PathVariable String groupCode, @RequestBody Group group) {
+		Group editedGroup = groupService.editGroup(groupCode, group);
+		return ResponseEntity.ok(editedGroup);
+		
+	}
+	
 
 }
