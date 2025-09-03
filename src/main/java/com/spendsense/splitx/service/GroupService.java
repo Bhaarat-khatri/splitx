@@ -106,6 +106,13 @@ public class GroupService {
 	public Group getGroupDetailsByGroupCode(String groupCode) {
 		return groupRepository.findByGroupCode(groupCode);
 	}
+
+	public Group editGroup(String groupCode, Group group) {
+		// TODO Auto-generated method stub
+		Group editedGroup = groupRepository.findByGroupCode(groupCode);
+		editedGroup.setGroupName(group.getGroupName());
+		return groupRepository.save(editedGroup);
+	}
 	
 }
 	

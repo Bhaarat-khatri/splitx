@@ -26,7 +26,7 @@ public class Group {
 	private LocalDateTime createDate;
 
 	@OneToMany(mappedBy = "group")
-	@JsonIgnore
+	//@JsonIgnore
 	private List<UserGroupMapping> users;
 
 	@OneToMany(mappedBy = "group")
