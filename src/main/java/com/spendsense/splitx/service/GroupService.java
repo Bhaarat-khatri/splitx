@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spendsense.splitx.entity.Group;
+import com.spendsense.splitx.entity.GroupLogs;
 import com.spendsense.splitx.entity.Transaction;
 import com.spendsense.splitx.entity.User;
 import com.spendsense.splitx.entity.UserGroupMapping;
 import com.spendsense.splitx.entity.UserTransactionMapping;
 import com.spendsense.splitx.exception.GroupNotFoundException;
 import com.spendsense.splitx.exception.UserAlreadyExistsException;
+import com.spendsense.splitx.repository.GroupLogsRepository;
 import com.spendsense.splitx.repository.GroupRepository;
 import com.spendsense.splitx.repository.TransactionRepository;
 import com.spendsense.splitx.repository.UserGroupMappingRepository;
@@ -33,6 +35,9 @@ public class GroupService {
 	
 	@Autowired 
 	private UserRepository userRepository;
+	
+	@Autowired
+	private GroupLogsRepository groupLogsRepository;
 	
 	
 	public List<Group> getGroupsByUser(long userId) {
@@ -107,11 +112,26 @@ public class GroupService {
 		return groupRepository.findByGroupCode(groupCode);
 	}
 
-	public Group editGroup(String groupCode, Group group) {
+	public Group editGroup(String groupCode, Group group, User user) {
 		// TODO Auto-generated method stub
 		Group editedGroup = groupRepository.findByGroupCode(groupCode);
+		String oldName = editedGroup.getGroupName();
 		editedGroup.setGroupName(group.getGroupName());
-		return groupRepository.save(editedGroup);
+		editedGroup = groupRepository.save(editedGroup);
+		GroupLogs log = GroupLogs.builder()
+				.group(editedGroup)
+				.oldName(oldName)
+				.newName(editedGroup.getGroupName())
+				.renamedBy(user)
+				.renamedOn(LocalDateTime.now())
+				.build();
+		groupLogsRepository.save(log);
+		return editedGroup;
+	}
+
+	public List<GroupLogs> getGroupLogs(String groupCode) {
+		Group group = groupRepository.findByGroupCode(groupCode);
+		return groupLogsRepository.findAllByGroup(group);
 	}
 	
 }
