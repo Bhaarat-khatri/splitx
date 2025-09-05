@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spendsense.splitx.entity.Group;
+import com.spendsense.splitx.entity.GroupLogs;
 import com.spendsense.splitx.entity.Repayments;
 import com.spendsense.splitx.entity.Transaction;
 import com.spendsense.splitx.entity.User;
@@ -23,6 +24,7 @@ import com.spendsense.splitx.service.TransactionService;
 import com.spendsense.splitx.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 
 @RestController
 public class SplitXController {
@@ -51,6 +53,7 @@ public class SplitXController {
 	}
 
 	@PostMapping("/api/create-group")
+	@Transactional(rollbackOn = Exception.class)
 	public Group createGroup(@RequestBody Group group,HttpServletRequest request) throws Exception {
 		try {
 			Long userId = (Long) request.getAttribute("userId");
@@ -67,6 +70,7 @@ public class SplitXController {
 	}
 
 	@PostMapping("/api/join-group")
+	@Transactional(rollbackOn = Exception.class)
 	public ResponseEntity<Group> joinGroup(@RequestBody Group group,HttpServletRequest request) throws Exception {
 		Long userId = (Long) request.getAttribute("userId");
 
@@ -75,6 +79,7 @@ public class SplitXController {
 	}
 
 	@PostMapping("/api/add-expense")
+	@Transactional(rollbackOn = Exception.class)
 	public List<Repayments> addExpense(@RequestBody Map<String, Object> payload,HttpServletRequest request)
 			throws Exception {
 
@@ -102,6 +107,7 @@ public class SplitXController {
 	}
 	
 	@PutMapping("/api/delete-transaction/{txnId}")
+	@Transactional(rollbackOn = Exception.class)
 	public Transaction deleteTransaction(@PathVariable Long txnId) {
 		return transactionService.deleteTransaction(txnId);
 	}
@@ -113,10 +119,18 @@ public class SplitXController {
 	}
 	
 	@PutMapping("/api/group/{groupCode}/edit") 
-	public ResponseEntity<Group> editGroup(@PathVariable String groupCode, @RequestBody Group group) {
-		Group editedGroup = groupService.editGroup(groupCode, group);
+	@Transactional(rollbackOn = Exception.class)
+	public ResponseEntity<Group> editGroup(@PathVariable String groupCode, @RequestBody Group group, HttpServletRequest request) {
+		Long userId = (Long) request.getAttribute("userId");
+		User user = userService.getUserById(userId);
+		Group editedGroup = groupService.editGroup(groupCode, group, user);
 		return ResponseEntity.ok(editedGroup);
 		
+	}
+	
+	@GetMapping("/api/group/{groupCode}/get-logs")
+	public ResponseEntity<List<GroupLogs>> getGroupLogs(@PathVariable String groupCode) {
+		return ResponseEntity.ok(groupService.getGroupLogs(groupCode));
 	}
 	
 
