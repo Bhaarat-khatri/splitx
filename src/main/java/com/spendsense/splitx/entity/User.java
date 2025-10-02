@@ -1,10 +1,12 @@
 package com.spendsense.splitx.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -47,6 +49,12 @@ public class User {
 	@OneToMany(mappedBy = "to")
 	@JsonIgnore
 	private List<Repayments> toRepaymnets;
+	
+//	@OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<GroupTransactionLogs> transactionLogs = new ArrayList<>();
+//	
+//	@OneToMany(mappedBy = "deletedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<GroupTransactionLogs> transactionLogs = new ArrayList<>();
 
 	public User() {
 
