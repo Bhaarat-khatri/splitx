@@ -138,11 +138,12 @@ public class TransactionService {
         List<Pair> creditor = new ArrayList<>();
 
         for (Map.Entry<Long, Double> entry : balanceMap.entrySet()) {
-            if (entry.getValue() < 0) {
+            if (entry.getValue() <= 0) {
                 creditor.add(new Pair(entry.getKey(), entry.getValue()));
-            } else if (entry.getValue() > 0) {
+            } 
+            if (entry.getValue() >= 0) {
                 debtor.add(new Pair(entry.getKey(), entry.getValue()));
-            }
+            } 
         }
 
         // Sort creditor in descending order of debt
