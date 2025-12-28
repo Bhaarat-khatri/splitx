@@ -1,5 +1,6 @@
 package com.spendsense.splitx.service;
 
+import com.spendsense.splitx.util.DummyEmailGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,18 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-	
+	public User createDummyUser(User user, User addedBy) {
+		String dummyEmail = DummyEmailGenerator.generateDummyEmail(user);
+		while(true) {
+			User existingUser = findUserByEmail(dummyEmail);
+			if (existingUser == null) {
+				break;
+			}
+			dummyEmail = DummyEmailGenerator.generateDummyEmail(user);
+		}
+		user.setEmail(dummyEmail);
+		user.setDummy(true);
+		user.setAddedBy(addedBy);
+		return userRepository.save(user);
+	}
 }

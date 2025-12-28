@@ -147,4 +147,15 @@ public class SplitXController {
 		return ResponseEntity.ok(groupTransactionLogsService.getTransactionLogs(groupCode));
 	}
 
+	@PostMapping("/api/add-member/{groupCode}")
+	@Transactional(rollbackOn = Exception.class)
+	public ResponseEntity<Group> addMember(@PathVariable String groupCode, @RequestBody User user, HttpServletRequest request) throws Exception {
+		Long userId = (Long) request.getAttribute("userId");
+		User addedBy = userService.getUserById(userId);
+		User createdDummyUser = userService.createDummyUser(user, addedBy);
+		Group group = groupService.getGroupDetailsByGroupCode(groupCode);
+		Group updatedGroup = groupService.joinGroup(group, createdDummyUser.getUserId());
+		return ResponseEntity.ok(updatedGroup);
+	}
+
 }
