@@ -1,16 +1,14 @@
 package com.spendsense.splitx.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Null;
 
 @Entity(name = "user_table")
 public class User {
@@ -47,6 +45,28 @@ public class User {
 	@OneToMany(mappedBy = "to")
 	@JsonIgnore
 	private List<Repayments> toRepaymnets;
+
+	public Boolean isDummy() {
+		return isDummy;
+	}
+
+	public User getAddedBy() {
+		return addedBy;
+	}
+
+	public void setDummy(Boolean dummy) {
+		isDummy = dummy;
+	}
+
+	public void setAddedBy(User addedBy) {
+		this.addedBy = addedBy;
+	}
+
+	@Nullable
+	private Boolean isDummy;
+	@ManyToOne
+	@JoinColumn(name = "added_by_user_id")
+	private User addedBy;
 
 	public User() {
 

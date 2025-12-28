@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spendsense.splitx.entity.Group;
+import com.spendsense.splitx.entity.GroupTransactionLogs;
 import com.spendsense.splitx.entity.Repayments;
 import com.spendsense.splitx.entity.Transaction;
 import com.spendsense.splitx.entity.User;
@@ -18,6 +19,7 @@ import com.spendsense.splitx.entity.UserTransactionMapping;
 import com.spendsense.splitx.exception.GroupNotFoundException;
 import com.spendsense.splitx.exception.UserAlreadyExistsException;
 import com.spendsense.splitx.repository.GroupRepository;
+import com.spendsense.splitx.repository.GroupTransactionLogsRepository;
 import com.spendsense.splitx.repository.RepaymentsRepository;
 import com.spendsense.splitx.repository.TransactionRepository;
 import com.spendsense.splitx.repository.UserRepository;
@@ -50,6 +52,9 @@ public class TransactionService {
 	
 	@Autowired
 	private RepaymentsRepository repaymentRepository;
+	
+	@Autowired
+	private GroupTransactionLogsRepository groupTransactionLogsRepository;
 
 	public List<Repayments> createTransaction(Map<String, Object> payload, long userId) throws Exception {
 
@@ -133,11 +138,12 @@ public class TransactionService {
         List<Pair> creditor = new ArrayList<>();
 
         for (Map.Entry<Long, Double> entry : balanceMap.entrySet()) {
-            if (entry.getValue() < 0) {
+            if (entry.getValue() <= 0) {
                 creditor.add(new Pair(entry.getKey(), entry.getValue()));
-            } else if (entry.getValue() > 0) {
+            } 
+            if (entry.getValue() >= 0) {
                 debtor.add(new Pair(entry.getKey(), entry.getValue()));
-            }
+            } 
         }
 
         // Sort creditor in descending order of debt
@@ -174,9 +180,21 @@ public class TransactionService {
 		return transactionRepository.findTransactionByGroupId(group.getId());
 	}
 	
-	public Transaction deleteTransaction(Long id) {
+	public Transaction deleteTransaction(String groupCode, Long id, Long userId) {
+		Group group = groupRepository.findByGroupCode(groupCode);
+		User user = userRepository.findById(userId).get();
 		Transaction txn = transactionRepository.findById(id).get();
+		List<GroupTransactionLogs> existingLogs = groupTransactionLogsRepository.findAllByTransaction(txn);
+		GroupTransactionLogs log = GroupTransactionLogs.builder()
+				.createdBy(user)
+				.group(group)
+				.transaction(txn)
+				.operation("delete")
+				.build();
+		if(!existingLogs.isEmpty())
+			log.setAmount(existingLogs.get(0).getAmount());
 		txn.setSoftDelete(1);
+		groupTransactionLogsRepository.save(log);
 		return transactionRepository.save(txn);
 	}
 
